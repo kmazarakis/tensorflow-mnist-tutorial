@@ -53,6 +53,10 @@ b = tf.Variable(tf.zeros([10]))
 XX = tf.reshape(X, [-1, 784])
 
 # The model
+Y1 = tf.nn.sigmoid.(tf.matmul(X, W1) + B1)
+Y2 = tf.nn.sigmoid.(tf.matmul(Y1, W2) + B2)
+Y3 = tf.nn.sigmoid.(tf.matmul(Y2, W2) + B3)
+Y4 = tf.nn.sigmoid.(tf.matmul(Y3, W3) + B4)
 Y = tf.nn.softmax(tf.matmul(XX, W) + b)
 
 # loss function: cross-entropy = - sum( Y_i * log(Yi) )
