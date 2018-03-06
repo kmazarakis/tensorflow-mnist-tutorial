@@ -52,8 +52,36 @@ b = tf.Variable(tf.zeros([10]))
 # -1 in the shape definition means "the only possible dimension that will preserve the number of elements"
 XX = tf.reshape(X, [-1, 784])
 
+
+# five layers and their number of neurons (tha last layer has 10 softmax neurons)
+L = 200
+M = 100
+N = 60
+O = 30
+# Weights initialised with small random values between -0.2 and +0.2
+# When using RELUs, make sure biases are initialised with small *positive* values for example 0.1 = tf.ones([K])/10
+W1 = tf.Variable(tf.truncated_normal([784, L], stddev=0.1))  # 784 = 28 * 28
+B1 = tf.Variable(tf.zeros([L]))
+W2 = tf.Variable(tf.truncated_normal([L, M], stddev=0.1))
+B2 = tf.Variable(tf.zeros([M]))
+W3 = tf.Variable(tf.truncated_normal([M, N], stddev=0.1))
+B3 = tf.Variable(tf.zeros([N]))
+W4 = tf.Variable(tf.truncated_normal([N, O], stddev=0.1))
+B4 = tf.Variable(tf.zeros([O]))
+W5 = tf.Variable(tf.truncated_normal([O, 10], stddev=0.1))
+B5 = tf.Variable(tf.zeros([10]))
+
 # The model
-Y = tf.nn.softmax(tf.matmul(XX, W) + b)
+XX = tf.reshape(X, [-1, 784])
+Y1 = tf.nn.sigmoid(tf.matmul(XX, W1) + B1)
+Y2 = tf.nn.sigmoid(tf.matmul(Y1, W2) + B2)
+Y3 = tf.nn.sigmoid(tf.matmul(Y2, W3) + B3)
+Y4 = tf.nn.sigmoid(tf.matmul(Y3, W4) + B4)
+Ylogits = tf.matmul(Y4, W5) + B5
+Y = tf.nn.softmax(Ylogits)
+
+# The model
+#Y = tf.nn.softmax(tf.matmul(XX, W) + b)
 
 # loss function: cross-entropy = - sum( Y_i * log(Yi) )
 #                           Y: the computed output vector
